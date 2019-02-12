@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    body{
+      text-align:center;
+    }
+    .win{
+        float: left;
+    }
+</style>
+<body>
+
+            <div class="main">
+
+                <textarea rows="5" cols="20"  id="texts" ></textarea>
+                <br>
+            <button onclick="btnAjax()">翻译</button>
+            </div>
+            <br>
+
+<div class="win">百度
+<textarea rows="5" cols="20"  id="baidu" ></textarea></div>
+<div class="win" >谷歌
+<textarea rows="5" cols="20"  id="google"  ></textarea></div>
+<div class="win">有道
+<textarea rows="5" cols="20" id="youdao"  ></textarea></div>
+<div class="win">360
+<textarea rows="5" cols="20"   id="360" ></textarea></div>
+
+
+</body>
+ <script src="/static/js/common.js"></script>
+<script>
+        function btnAjax(){
+            //1.创建/获取 xhr
+            var xhr = getXhr();
+            //2.创建请求 - open(method,url,async)
+                 // 获取文本
+                var texts = document.getElementById('texts').value
+
+            xhr.open('get','/translate?data='+texts,true);
+            //3.设置回调函数
+            xhr.onreadystatechange = function(){
+                //判断xhr.readyState是否为4并且xhr.status是否为200
+                if(xhr.readyState == 4 && xhr.status == 200){
+                  //可以接收服务器端的响应数据
+                  var resText = xhr.responseText;
+                  //业务处理
+                    var obj = JSON.parse(resText);
+                    console.log(obj.baidu)
+                  document.getElementById('baidu').innerHTML = obj.baidu;
+                    document.getElementById('google').innerHTML = obj.google;
+                    document.getElementById('360').innerHTML = obj.sll;
+                    document.getElementById('youdao').innerHTML = obj.youdao;
+                }
+            }
+            //4.发送请求
+            xhr.send(null);
+        }
+    </script>
+</html>
